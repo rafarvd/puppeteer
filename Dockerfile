@@ -2,13 +2,13 @@ FROM ghcr.io/puppeteer/puppeteer:latest
 
 WORKDIR /usr/src/app
 
-# Copia só package.json primeiro
+# Copia só package.json para instalar dependências primeiro
 COPY package*.json ./
 
 # Ajusta permissões para pptruser
 RUN chown -R pptruser:pptruser /usr/src/app
 
-# Muda para pptruser (usuário da imagem oficial)
+# Muda para usuário pptruser
 USER pptruser
 
 # Instala dependências
