@@ -1,20 +1,15 @@
 FROM ghcr.io/puppeteer/puppeteer:latest
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copia só package.json para instalar dependências primeiro
 COPY package*.json ./
+COPY ecosystem.config.js ./
 
-# Ajusta permissões para pptruser
-RUN chown -R pptruser:pptruser /usr/src/app
+RUN npm install
+RUN npm install -g pm2
 
-# Muda para usuário pptruser
-USER pptruser
+COPY . .
 
-# Instala dependências
-RUN npm install --unsafe-perm
+EXPOSE 3000
 
-# Copia o restante do código
-COPY --chown=pptruser:pptruser . .
-
-CMD ["node", "index.js"]
+CMD ["pm2-runtime", "ecosystem.config.js"]
